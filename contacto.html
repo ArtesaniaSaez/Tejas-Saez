@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tejas Artesanales - Contacto</title>
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                Tejas Artesanales Sáez
+            </div>
+            <ul class="menu">
+                <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
+                <li><a href="productos.html"><i class="fas fa-th"></i> Productos</a></li>
+                <li><a href="galeria.html"><i class="fas fa-images"></i> Galería</a></li>
+                <li><a href="contacto.html" class="activo"><i class="fas fa-envelope"></i> Contacto</a></li>
+            </ul>
+            <div class="menu-movil">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero contacto-hero">
+            <div class="hero-content" data-aos="fade-up">
+                <h1>Contáctanos</h1>
+                <p>Estamos aquí para ayudarte con tu proyecto de tejas</p>
+            </div>
+        </section>
+
+        <section class="contacto-contenido">
+            <div class="container">
+                <div class="contacto-grid">
+                    <div class="formulario-contacto" data-aos="fade-right">
+                        <h2>Envíanos un mensaje</h2>
+                        <form id="formulario-contacto">
+                            <div class="campo-formulario">
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" id="nombre" name="nombre" required>
+                            </div>
+                            <div class="campo-formulario">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="campo-formulario">
+                                <label for="telefono">Teléfono:</label>
+                                <input type="tel" id="telefono" name="telefono">
+                            </div>
+                            <div class="campo-formulario">
+                                <label for="mensaje">Mensaje:</label>
+                                <textarea id="mensaje" name="mensaje" required></textarea>
+                            </div>
+                            <button type="submit" class="btn-principal"><i class="fas fa-paper-plane"></i> Enviar Mensaje</button>
+                        </form>
+                    </div>
+                    <div class="info-contacto" data-aos="fade-left">
+                        <h2>Información de Contacto</h2>
+                        <ul>
+                            <li><i class="fas fa-map-marker-alt"></i> Pnt Las Torres - Lurigancho - Chosica</li>
+                            <li><i class="fas fa-phone"></i> 938586905</li>
+                            <li><i class="fas fa-envelope"></i> cesar10_52@hotmail.com</li>
+                        </ul>
+                        <h3>Horario de Atención</h3>
+                        <p>Lunes a Viernes: 07:00 AM - 06:00 PM</p>
+                        <p>Sábados: 07:00 AM - 01:00 PM</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mapa" data-aos="zoom-in">
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d487.8236765946471!2d-76.91838519786542!3d-12.002887112597382!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c5800a566ac7%3A0xb0b5eb78e31c6f57!2sPUENTE%20LAS%20TORRES!5e0!3m2!1ses-419!2spe!4v1739233229755!5m2!1ses-419!2spe" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>            
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-contenido">
+            <div class="footer-seccion" data-aos="fade-right">
+                <h3>Tejas Artesanales Sáez</h3>
+                <p>Creando belleza y protección para tu hogar desde 1990.</p>
+            </div>
+            <div class="footer-seccion" data-aos="fade-up">
+                <h3>Enlaces Rápidos</h3>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="productos.html"><i class="fas fa-th"></i> Productos</a></li>
+                    <li><a href="galeria.html"><i class="fas fa-images"></i> Galería</a></li>
+                    <li><a href="contacto.html"><i class="fas fa-envelope"></i> Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-seccion" data-aos="fade-up">
+                <h3>Contacto</h3>
+                <p><i class="fas fa-envelope"></i> cesar10_52@hotmail.com</p>
+                <p><i class="fas fa-phone"></i> 938586905</p>
+                <p><i class="fas fa-phone"></i> 934498803</p>
+            </div>
+        </div>
+        <div class="footer-inferior">
+            <p>&copy; 2025 Tejas Artesanales Sáez. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
