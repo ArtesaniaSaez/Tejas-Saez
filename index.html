@@ -4,94 +4,629 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tejas Artesanales - Inicio</title>
-    <link rel="stylesheet" href="estilos.css">
+    <link rel="icon" href="imagenes/logo.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --color-primario: #8B4513;
+            --color-secundario: #D2691E;
+            --color-fondo: #FFF8DC;
+            --color-texto: #333;
+            --fuente-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--fuente-principal);
+            line-height: 1.6;
+            color: var(--color-texto);
+            background-color: var(--color-fondo);
+            overflow-x: hidden;
+        }
+
+        .pantalla-bienvenida {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-primario);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .pantalla-bienvenida h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            padding: 0 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .pantalla-bienvenida p {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            max-width: 80%;
+            padding: 0 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out 0.2s, transform 0.5s ease-out 0.2s;
+        }
+
+        .barra-progreso-contenedor {
+            width: 80%;
+            max-width: 300px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 3px;
+            margin-top: 20px;
+            opacity: 0;
+            transform: scaleX(0.8);
+            transition: opacity 0.5s ease-out 0.4s, transform 0.5s ease-out 0.4s;
+        }
+
+        .barra-progreso {
+            width: 0%;
+            height: 20px;
+            background-color: var(--color-secundario);
+            border-radius: 8px;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .contenido-principal {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        header {
+            background-color: var(--color-primario);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+        }
+
+        header.scrolled {
+            background-color: rgba(139, 69, 19, 0.9);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+        }
+
+        .menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .menu li {
+            margin-left: 1.5rem;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .menu a:hover, .menu a.activo {
+            color: var(--color-secundario);
+            transform: translateY(-2px);
+        }
+
+        .menu-movil {
+            display: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-movil:hover {
+            transform: scale(1.1);
+        }
+
+        main {
+            margin-top: 80px;
+        }
+
+        .hero {
+            position: relative;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: fixed; /* Hace que el fondo sea realmente fijo */
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('imagenes/foto1.jpeg');
+            background-size: cover;
+            background-position: center;
+            z-index: -1; /* Envía el fondo detrás del contenido */
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5); /* Capa de oscurecimiento */
+            z-index: 1;
+        }
+
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-principal, .btn-secundario {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-principal {
+            background-color: var(--color-primario);
+            color: white;
+        }
+
+        .btn-principal:hover {
+            background-color: var(--color-secundario);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secundario {
+            background-color: white;
+            color: var(--color-primario);
+        }
+
+        .btn-secundario:hover {
+            background-color: var(--color-secundario);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .caracteristicas {
+            padding: 4rem 2rem;
+            background-color: white;
+        }
+
+        .caracteristicas h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: var(--color-primario);
+        }
+
+        .caracteristicas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .caracteristica {
+            text-align: center;
+            padding: 2rem;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .caracteristica:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .caracteristica i {
+            font-size: 3rem;
+            color: var(--color-secundario);
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .caracteristica:hover i {
+            transform: scale(1.1);
+        }
+
+        .caracteristica h3 {
+            margin-bottom: 1rem;
+            color: var(--color-primario);
+        }
+
+        .cta {
+            background-color: var(--color-secundario);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(45deg);
+            transition: transform 0.5s ease;
+        }
+
+        .cta:hover::before {
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        footer {
+            background-color: var(--color-primario);
+            color: white;
+            padding: 3rem 2rem 1rem;
+        }
+
+        .footer-contenido {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-seccion h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-seccion ul {
+            list-style: none;
+        }
+
+        .footer-seccion a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .footer-seccion a:hover {
+            color: var(--color-secundario);
+            transform: translateX(5px);
+        }
+
+        .footer-inferior {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--color-primario);
+                padding: 1rem;
+                transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+
+            .menu.activo {
+                display: flex;
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            .menu li {
+                margin: 0.5rem 0;
+            }
+
+            .menu-movil {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">
-                <i class="fas fa-home"></i>
-                Tejas Artesanales Sáez
-            </div>
-            <ul class="menu">
-                <li><a href="index.html" class="activo"><i class="fas fa-home"></i> Inicio</a></li>
-                <li><a href="productos.html"><i class="fas fa-th"></i> Productos</a></li>
-                <li><a href="galeria.html"><i class="fas fa-images"></i> Galería</a></li>
-                <li><a href="contacto.html"><i class="fas fa-envelope"></i> Contacto</a></li>
-            </ul>
-            <div class="menu-movil">
-                <i class="fas fa-bars"></i>
-            </div>
-        </nav>
-    </header>
+    <div class="pantalla-bienvenida">
+        <h1>BIENVENIDOS A TEJAS ARTESANALES SÁEZ</h1>
+        <p>Descubre la belleza y calidad de nuestras tejas hechas a mano</p>
+        <div class="barra-progreso-contenedor">
+            <div class="barra-progreso"></div>
+        </div>
+    </div>
 
-    <main>
-        <section class="hero">
-            <div class="hero-content" data-aos="fade-up">
-                <h1>Bienvenidos a Tejas Artesanales Sáez</h1>
-                <p>Descubre la belleza y calidad de nuestras tejas hechas a mano</p>
-                <a href="productos.html" class="btn-principal"><i class="fas fa-shopping-cart"></i> Ver Productos</a>
-            </div>
-        </section>
-
-        <section class="caracteristicas">
-            <h2 data-aos="fade-up">¿Por qué elegir nuestras tejas?</h2>
-            <div class="caracteristicas-grid">
-                <div class="caracteristica" data-aos="fade-up" data-aos-delay="100">
-                    <i class="fas fa-hammer"></i>
-                    <h3>Artesanía de Calidad</h3>
-                    <p>Cada teja es cuidadosamente elaborada por nuestros expertos artesanos.</p>
+    <div class="contenido-principal">
+        <header>
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-home"></i>
+                    Tejas Artesanales Sáez
                 </div>
-                <div class="caracteristica" data-aos="fade-up" data-aos-delay="200">
-                    <i class="fas fa-leaf"></i>
-                    <h3>Materiales Naturales</h3>
-                    <p>Utilizamos arcilla de la más alta calidad para crear tejas duraderas y ecológicas.</p>
-                </div>
-                <div class="caracteristica" data-aos="fade-up" data-aos-delay="300">
-                    <i class="fas fa-palette"></i>
-                    <h3>Diseños Únicos</h3>
-                    <p>Ofrecemos una amplia variedad de estilos y colores para adaptarnos a tu proyecto.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="cta" data-aos="zoom-in">
-            <h2>¿Listo para transformar tu techo?</h2>
-            <p>Contáctanos hoy para obtener un presupuesto personalizado</p>
-            <a href="contacto.html" class="btn-secundario"><i class="fas fa-phone"></i> Contactar Ahora</a>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-contenido">
-            <div class="footer-seccion" data-aos="fade-right">
-                <h3>Tejas Artesanales Sáez</h3>
-                <p>Creando belleza y protección para tu hogar desde 1990.</p>
-            </div>
-            <div class="footer-seccion" data-aos="fade-up">
-                <h3>Enlaces Rápidos</h3>
-                <ul>
-                    <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
+                <ul class="menu">
+                    <li><a href="index.html" class="activo"><i class="fas fa-home"></i> Inicio</a></li>
                     <li><a href="productos.html"><i class="fas fa-th"></i> Productos</a></li>
                     <li><a href="galeria.html"><i class="fas fa-images"></i> Galería</a></li>
                     <li><a href="contacto.html"><i class="fas fa-envelope"></i> Contacto</a></li>
                 </ul>
+                <div class="menu-movil">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero">
+                <div class="hero-content" data-aos="fade-up">
+                    <h1>Bienvenidos a Tejas Artesanales Sáez</h1>
+                    <p>Descubre la belleza y calidad de nuestras tejas hechas a mano</p>
+                    <a href="productos.html" class="btn-principal"><i class="fas fa-shopping-cart"></i> Ver Productos</a>
+                </div>
+            </section>
+
+            <section class="caracteristicas">
+                <h2 data-aos="fade-up">¿Por qué elegir nuestras tejas?</h2>
+                <div class="caracteristicas-grid">
+                    <div class="caracteristica" data-aos="fade-up" data-aos-delay="100">
+                        <i class="fas fa-hammer"></i>
+                        <h3>Artesanía de Calidad</h3>
+                        <p>Cada teja es cuidadosamente elaborada por nuestros expertos artesanos.</p>
+                    </div>
+                    <div class="caracteristica" data-aos="fade-up" data-aos-delay="200">
+                        <i class="fas fa-leaf"></i>
+                        <h3>Materiales Naturales</h3>
+                        <p>Utilizamos arcilla de la más alta calidad para crear tejas duraderas y ecológicas.</p>
+                    </div>
+                    <div class="caracteristica" data-aos="fade-up" data-aos-delay="300">
+                        <i class="fas fa-palette"></i>
+                        <h3>Diseños Únicos</h3>
+                        <p>Ofrecemos una amplia variedad de estilos y colores para adaptarnos a tu proyecto.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cta" data-aos="zoom-in">
+                <h2>¿Listo para transformar tu techo?</h2>
+                <p>Contáctanos hoy para obtener un presupuesto personalizado</p>
+                <a href="contacto.html" class="btn-secundario"><i class="fas fa-phone"></i> Contactar Ahora</a>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-contenido">
+                <div class="footer-seccion" data-aos="fade-right">
+                    <h3>Tejas Artesanales Sáez</h3>
+                    <p>Creando belleza y protección para tu hogar desde 1990.</p>
+                </div>
+                <div class="footer-seccion" data-aos="fade-up">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
+                        <li><a href="productos.html"><i class="fas fa-th"></i> Productos</a></li>
+                        <li><a href="galeria.html"><i class="fas fa-images"></i> Galería</a></li>
+                        <li><a href="contacto.html"><i class="fas fa-envelope"></i> Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-seccion" data-aos="fade-up">
+                    <h3>Contacto</h3>
+                    <p><i class="fas fa-envelope"></i> cesar10_52@hotmail.com</p>
+                    <p><i class="fas fa-phone"></i> 938586905</p>
+                    <p><i class="fas fa-phone"></i> 934498803</p>
+                </div>
             </div>
-            <div class="footer-seccion" data-aos="fade-up">
-                <h3>Contacto</h3>
-                <p><i class="fas fa-envelope"></i> cesar10_52@hotmail.com</p>
-                <p><i class="fas fa-phone"></i> 938586905</p>
-                <p><i class="fas fa-phone"></i> 934498803</p>
+            <div class="footer-inferior">
+                <p>&copy; 2025 Tejas Artesanales Sáez. Todos los derechos reservados.</p>
             </div>
-        </div>
-        <div class="footer-inferior">
-            <p>&copy; 2025 Tejas Artesanales Sáez. Todos los derechos reservados.</p>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const pantallaBienvenida = document.querySelector('.pantalla-bienvenida');
+            const barraProgreso = document.querySelector('.barra-progreso');
+            const contenidoPrincipal = document.querySelector('.contenido-principal');
+            let progreso = 0;
+
+            // Verificar si es la primera visita
+            if (!sessionStorage.getItem('visitado')) {
+                pantallaBienvenida.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+
+                // Animación de entrada para elementos de la pantalla de bienvenida
+                setTimeout(() => {
+                    pantallaBienvenida.querySelector('h1').style.opacity = '1';
+                    pantallaBienvenida.querySelector('h1').style.transform = 'translateY(0)';
+                }, 100);
+
+                setTimeout(() => {
+                    pantallaBienvenida.querySelector('p').style.opacity = '1';
+                    pantallaBienvenida.querySelector('p').style.transform = 'translateY(0)';
+                }, 300);
+
+                setTimeout(() => {
+                    pantallaBienvenida.querySelector('.barra-progreso-contenedor').style.opacity = '1';
+                    pantallaBienvenida.querySelector('.barra-progreso-contenedor').style.transform = 'scaleX(1)';
+                }, 500);
+
+                // Función para actualizar la barra de progreso
+                function actualizarProgreso() {
+                    if (progreso < 100) {
+                        progreso += 1;
+                        barraProgreso.style.width = progreso + '%';
+                        setTimeout(actualizarProgreso, 30);
+                    } else {
+                        // Cuando la carga está completa
+                        setTimeout(() => {
+                            pantallaBienvenida.style.opacity = '0';
+                            pantallaBienvenida.style.transform = 'translateY(-100%)';
+                            contenidoPrincipal.style.opacity = '1';
+                            document.body.style.overflow = 'auto';
+                            setTimeout(() => {
+                                pantallaBienvenida.style.display = 'none';
+                            }, 500);
+                        }, 500);
+                    }
+                }
+
+                // Iniciar la animación de carga
+                setTimeout(actualizarProgreso, 500);
+
+                // Marcar como visitado
+                sessionStorage.setItem('visitado', 'true');
+            } else {
+                pantallaBienvenida.style.display = 'none';
+                contenidoPrincipal.style.opacity = '1';
+            }
+
+            // Inicializar AOS
+            AOS.init({
+                duration: 1000,
+                once: true
+            });
+
+            // Menú móvil
+            const menuMovil = document.querySelector('.menu-movil');
+            const menu = document.querySelector('.menu');
+
+            menuMovil.addEventListener('click', () => {
+                menu.classList.toggle('activo');
+            });
+
+            // Cerrar menú al hacer clic en un enlace
+            const enlaces = document.querySelectorAll('.menu a');
+            enlaces.forEach(enlace => {
+                enlace.addEventListener('click', () => {
+                    menu.classList.remove('activo');
+                });
+            });
+
+            // Efecto parallax en el hero
+            window.addEventListener('scroll', () => {
+                const hero = document.querySelector('.hero');
+                const scrollPosition = window.pageYOffset;
+                hero.style.backgroundPositionY = scrollPosition * 0.7 + 'px';
+            });
+
+            // Cambiar estilo del header al hacer scroll
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('header');
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Animación de entrada para el contenido del hero
+            setTimeout(() => {
+                const heroContent = document.querySelector('.hero-content');
+                heroContent.style.opacity = '1';
+                heroContent.style.transform = 'translateY(0)';
+            }, 500);
+        });
+    </script>
 </body>
 </html>

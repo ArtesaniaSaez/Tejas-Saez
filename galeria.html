@@ -4,10 +4,728 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tejas Artesanales - Galería</title>
-    <link rel="stylesheet" href="estilos.css">
+    <link rel="icon" href="imagenes/logo.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+    <style>
+        :root {
+            --color-primario: #8B4513;
+            --color-secundario: #D2691E;
+            --color-fondo: #FFF8DC;
+            --color-texto: #333;
+            --fuente-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--fuente-principal);
+            line-height: 1.6;
+            color: var(--color-texto);
+            background-color: var(--color-fondo);
+        }
+
+        header {
+            background-color: var(--color-primario);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+        }
+
+        .menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .menu li {
+            margin-left: 1.5rem;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .menu a:hover, .menu a.activo {
+            color: var(--color-secundario);
+        }
+
+        .menu-movil {
+            display: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        main {
+            margin-top: 80px;
+        }
+
+        .galeria-hero {
+            background-image: url('imagenes/foto17.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 40vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .galeria-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+        }
+
+        .galeria {
+            padding: 4rem 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .galeria h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            color: var(--color-primario);
+        }
+
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .galeria-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .galeria-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .galeria-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .galeria-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .galeria-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 1rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .galeria-item:hover .galeria-overlay {
+            transform: translateY(0);
+        }
+
+        .galeria-overlay h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .galeria-overlay p {
+            font-size: 0.9rem;
+        }
+
+        .cta {
+            background-color: var(--color-secundario);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-secundario {
+            display: inline-block;
+            background-color: white;
+            color: var(--color-primario);
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .btn-secundario:hover {
+            background-color: var(--color-primario);
+            color: white;
+        }
+
+        footer {
+            background-color: var(--color-primario);
+            color: white;
+            padding: 3rem 2rem 1rem;
+        }
+
+        .footer-contenido {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-seccion h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-seccion ul {
+            list-style: none;
+        }
+
+        .footer-seccion a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-seccion a:hover {
+            color: var(--color-secundario);
+        }
+
+        .footer-inferior {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--color-primario);
+                padding: 1rem;
+            }
+
+            .menu.activo {
+                display: flex;
+            }
+
+            .menu li {
+                margin: 0.5rem 0;
+            }
+
+            .menu-movil {
+                display: block;
+            }
+
+            .galeria-hero h1 {
+                font-size: 2rem;
+            }
+
+            .galeria-hero p {
+                font-size: 1rem;
+            }
+        }
+        :root {
+            --color-primario: #8B4513;
+            --color-secundario: #D2691E;
+            --color-fondo: #FFF8DC;
+            --color-texto: #333;
+            --fuente-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--fuente-principal);
+            line-height: 1.6;
+            color: var(--color-texto);
+            background-color: var(--color-fondo);
+            overflow-x: hidden;
+        }
+
+        .pantalla-bienvenida {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-primario);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .pantalla-bienvenida h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            padding: 0 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .pantalla-bienvenida p {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            max-width: 80%;
+            padding: 0 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out 0.2s, transform 0.5s ease-out 0.2s;
+        }
+
+        .barra-progreso-contenedor {
+            width: 80%;
+            max-width: 300px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 3px;
+            margin-top: 20px;
+            opacity: 0;
+            transform: scaleX(0.8);
+            transition: opacity 0.5s ease-out 0.4s, transform 0.5s ease-out 0.4s;
+        }
+
+        .barra-progreso {
+            width: 0%;
+            height: 20px;
+            background-color: var(--color-secundario);
+            border-radius: 8px;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .contenido-principal {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        header {
+            background-color: var(--color-primario);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+        }
+
+        header.scrolled {
+            background-color: rgba(139, 69, 19, 0.9);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+        }
+
+        .menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .menu li {
+            margin-left: 1.5rem;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .menu a:hover, .menu a.activo {
+            color: var(--color-secundario);
+            transform: translateY(-2px);
+        }
+
+        .menu-movil {
+            display: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-movil:hover {
+            transform: scale(1.1);
+        }
+
+        main {
+            margin-top: 80px;
+        }
+
+        .hero {
+            position: relative;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: fixed; /* Hace que el fondo sea realmente fijo */
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('imagenes/foto1.jpeg');
+            background-size: cover;
+            background-position: center;
+            z-index: -1; /* Envía el fondo detrás del contenido */
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5); /* Capa de oscurecimiento */
+            z-index: 1;
+        }
+
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-principal, .btn-secundario {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-principal {
+            background-color: var(--color-primario);
+            color: white;
+        }
+
+        .btn-principal:hover {
+            background-color: var(--color-secundario);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secundario {
+            background-color: white;
+            color: var(--color-primario);
+        }
+
+        .btn-secundario:hover {
+            background-color: var(--color-secundario);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .caracteristicas {
+            padding: 4rem 2rem;
+            background-color: white;
+        }
+
+        .caracteristicas h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: var(--color-primario);
+        }
+
+        .caracteristicas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .caracteristica {
+            text-align: center;
+            padding: 2rem;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .caracteristica:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .caracteristica i {
+            font-size: 3rem;
+            color: var(--color-secundario);
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .caracteristica:hover i {
+            transform: scale(1.1);
+        }
+
+        .caracteristica h3 {
+            margin-bottom: 1rem;
+            color: var(--color-primario);
+        }
+
+        .cta {
+            background-color: var(--color-secundario);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(45deg);
+            transition: transform 0.5s ease;
+        }
+
+        .cta:hover::before {
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        footer {
+            background-color: var(--color-primario);
+            color: white;
+            padding: 3rem 2rem 1rem;
+        }
+
+        .footer-contenido {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-seccion h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-seccion ul {
+            list-style: none;
+        }
+
+        .footer-seccion a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .footer-seccion a:hover {
+            color: var(--color-secundario);
+            transform: translateX(5px);
+        }
+
+        .footer-inferior {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--color-primario);
+                padding: 1rem;
+                transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+
+            .menu.activo {
+                display: flex;
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            .menu li {
+                margin: 0.5rem 0;
+            }
+
+            .menu-movil {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+        
+        
+    </style>
 </head>
 <body>
     <header>
@@ -29,7 +747,7 @@
     </header>
 
     <main>
-        <section class="hero galeria-hero">
+        <section class="galeria-hero">
             <div class="hero-content" data-aos="fade-up">
                 <h1>Galería de Proyectos</h1>
                 <p>Explora nuestros trabajos más destacados</p>
@@ -38,47 +756,243 @@
 
         <section class="galeria">
             <div class="container">
-                <h2 data-aos="fade-up">Nuestros Proyectos</h2>
+                <h2 data-aos="fade-up">Nuestro Galeria</h2>
                 <div class="galeria-grid">
-                    <a href="" data-lightbox="galeria" data-title="Casa Mediterránea" class="galeria-item" data-aos="fade-up">
-                        <img src="imagenes/foto1.jpeg" alt="Casa Mediterránea">
+                    <a href="imagenes/foto1.jpeg" data-lightbox="galeria" data-title="Pastelero artesanal" class="galeria-item" data-aos="fade-up">
+                        <img src="imagenes/foto1.jpeg" alt="Pastelero artesanal">
                         <div class="galeria-overlay">
                             <h3>Pastelero artesanal</h3>
                             <p>Pastelero artesanal con patita medida</p>
                         </div>
                     </a>
-                    <a href="https://via.placeholder.com/800x600" data-lightbox="galeria" data-title="Restauración Histórica" class="galeria-item" data-aos="fade-up" data-aos-delay="100">
-                        <img src="imagenes/foto2.jpeg" alt="Restauración Histórica">
+                    <a href="imagenes/foto2.jpeg" data-lightbox="galeria" data-title="Teja plana" class="galeria-item" data-aos="fade-up" data-aos-delay="100">
+                        <img src="imagenes/foto2.jpeg" alt="Teja plana">
                         <div class="galeria-overlay">
                             <h3>Teja plana</h3>
-                            <p>Teja plana punta cuadrada artesanal medida </p>
+                            <p>Teja plana punta cuadrada artesanal medida</p>
                         </div>
                     </a>
-                    <a href="https://via.placeholder.com/800x600" data-lightbox="galeria" data-title="Residencia Moderna" class="galeria-item" data-aos="fade-up" data-aos-delay="200">
-                        <img src="imagenes/foto3.jpeg" alt="Residencia Moderna">
+                    <a href="imagenes/foto3.jpeg" data-lightbox="galeria" data-title="Teja plana" class="galeria-item" data-aos="fade-up" data-aos-delay="200">
+                        <img src="imagenes/foto3.jpeg" alt="Teja plana">
                         <div class="galeria-overlay">
                             <h3>Teja plana</h3>
-                            <p>Teja plana punta redonda artesanal </p>
+                            <p>Teja plana punta redonda artesanal</p>
                         </div>
                     </a>
-                    <a href="https://via.placeholder.com/800x600" data-lightbox="galeria" data-title="Hotel de Lujo" class="galeria-item" data-aos="fade-up" data-aos-delay="300">
-                        <img src="imagenes/foto4.jpeg" alt="Hotel de Lujo">
+                    <a href="imagenes/foto4.jpeg" data-lightbox="galeria" data-title="Tejas ovaladas" class="galeria-item" data-aos="fade-up" data-aos-delay="300">
+                        <img src="imagenes/foto4.jpeg" alt="Tejas ovaladas">
                         <div class="galeria-overlay">
-                            <h3>Tejas ovalada</h3>
+                            <h3>Tejas ovaladas</h3>
                             <p>Tejas ovaladas standar medidas</p>
                         </div>
                     </a>
-                    <a href="https://via.placeholder.com/800x600" data-lightbox="galeria" data-title="Hotel de Lujo" class="galeria-item" data-aos="fade-up" data-aos-delay="300">
-                        <img src="imagenes/foto5.jpeg" alt="Hotel de Lujo">
+                    <a href="imagenes/foto5.jpeg" data-lightbox="galeria" data-title="Modelos" class="galeria-item" data-aos="fade-up" data-aos-delay="400">
+                        <img src="imagenes/foto5.jpeg" alt="Modelos">
                         <div class="galeria-overlay">
                             <h3>Modelos</h3>
-                            <p>Todo tipo de modelos en artesania</p>
+                            <p>Todo tipo de modelos en artesanía</p>
                         </div>
                     </a>
-
+                    <!-- Nuevas imágenes agregadas -->
+                    <a href="imagenes/foto6.jpg" data-lightbox="galeria" data-title="Teja curva" class="galeria-item" data-aos="fade-up" data-aos-delay="500">
+                        <img src="imagenes/foto6.jpg" alt="Teja curva">
+                        <div class="galeria-overlay">
+                            <h3>Teja curva</h3>
+                            <p>Teja curva artesanal</p>
+                        </div>
+                    </a>
+                    <a href="imagenes/foto7.jpg" data-lightbox="galeria" data-title="Escaleras de tejas" class="galeria-item" data-aos="fade-up" data-aos-delay="600">
+                        <img src="imagenes/foto7.jpg" alt="Escaleras de tejas">
+                        <div class="galeria-overlay">
+                            <h3>Escaleras de tejas</h3>
+                            <p>Apilado de tejas en escalera</p>
+                        </div>
+                    </a>
+                    <a href="imagenes/foto8.jpg" data-lightbox="galeria" data-title="Bloque de tejas" class="galeria-item" data-aos="fade-up" data-aos-delay="700">
+                        <img src="imagenes/foto8.jpg" alt="Bloque de tejas">
+                        <div class="galeria-overlay">
+                            <h3>Bloque de tejas</h3>
+                            <p>Bloques de tejas para construcción</p>
+                        </div>
+                    </a>
+                    <a href="imagenes/foto9.jpg" data-lightbox="galeria" data-title="Teja cuadrada" class="galeria-item" data-aos="fade-up" data-aos-delay="800">
+                        <img src="imagenes/foto9.jpg" alt="Teja cuadrada">
+                        <div class="galeria-overlay">
+                            <h3>Teja cuadrada</h3>
+                            <p>Teja cuadrada para construcción</p>
+                        </div>
+                    </a>
+                    <a href="imagenes/foto10.jpg" data-lightbox="galeria" data-title="Piso de tejas" class="galeria-item" data-aos="fade-up" data-aos-delay="900">
+                        <img src="imagenes/foto10.jpg" alt="Piso de tejas">
+                        <div class="galeria-overlay">
+                            <h3>Piso de tejas</h3>
+                            <p>Tejas utilizadas como piso rústico</p>
+                        </div>
+                    </a>
+                    <a href="imagenes/foto11.jpg" data-lightbox="galeria" data-title="Teja de refuerzo" class="galeria-item" data-aos="fade-up" data-aos-delay="1000">
+                        <img src="imagenes/foto11.jpg" alt="Teja de refuerzo">
+                        <div class="galeria-overlay">
+                            <h3>Teja de refuerzo</h3>
+                            <p>Teja estructural reforzada</p>
+                        </div>
+                    </a>
+                    <a href="imagenes/foto12.jpg" data-lightbox="galeria" data-title="Piso de tejas rústico" class="galeria-item" data-aos="fade-up" data-aos-delay="1100">
+                        <img src="imagenes/foto12.jpg" alt="Piso de tejas rústico">
+                        <div class="galeria-overlay">
+                            <h3>Piso de tejas rústico</h3>
+                            <p>Diseño rústico con tejas</p>
+                        </div>
+                    </a>
+                    <a href="imagenes/foto13.jpg" data-lightbox="galeria" data-title="Modelo clásico" class="galeria-item" data-aos="fade-up" data-aos-delay="1200">
+                        <img src="imagenes/foto13.jpg" alt="Modelo clásico">
+                        <div class="galeria-overlay">
+                            <h3>Modelo clásico</h3>
+                            <p>Elegancia en diseño</p>
+                        </div>
+                    </a>
+                    <a href="imagenes/foto14.jpg" data-lightbox="galeria" data-title="Tejas para techo" class="galeria-item" data-aos="fade-up" data-aos-delay="1300">
+                        <img src="imagenes/foto14.jpg" alt="Tejas para techo">
+                        <div class="galeria-overlay">
+                            <h3>Tejas para techo</h3>
+                            <p>Protección y estilo</p>
+                        </div>
+                    </a>
+                    <a href="imagenes/foto15.jpg" data-lightbox="galeria" data-title="Pieza de diseño" class="galeria-item" data-aos="fade-up" data-aos-delay="1400">
+                        <img src="imagenes/foto15.jpg" alt="Pieza de diseño">
+                        <div class="galeria-overlay">
+                            <h3>Pieza de diseño</h3>
+                            <p>Detalles artesanales</p>
+                        </div>
+                    </a>
+                    <a href="imagenes/foto16.jpg" data-lightbox="galeria" data-title="Detalles rústicos" class="galeria-item" data-aos="fade-up" data-aos-delay="1500">
+                        <img src="imagenes/foto16.jpg" alt="Detalles rústicos">
+                        <div class="galeria-overlay">
+                            <h3>Detalles rústicos</h3>
+                            <p>Decoración única</p>
+                        </div>
+                    </a>
+                    <a href="imagenes/foto17.jpg" data-lightbox="galeria" data-title="Decoración con tejas" class="galeria-item" data-aos="fade-up" data-aos-delay="1600">
+                        <img src="imagenes/foto17.jpg" alt="Decoración con tejas">
+                        <div class="galeria-overlay">
+                            <h3>Decoración con tejas</h3>
+                            <p>Creatividad en diseño</p>
+                        </div>
+                    </a>
+                    <a href="imagenes/foto18.jpg" data-lightbox="galeria" data-title="Tejas pintadas" class="galeria-item" data-aos="fade-up" data-aos-delay="1700">
+                        <img src="imagenes/foto18.jpg" alt="Tejas pintadas">
+                        <div class="galeria-overlay">
+                            <h3>Tejas pintadas</h3>
+                            <p>Colores vibrantes</p>
+                        </div>
+                    </a>
+                    <a href="imagenes/foto19.jpg" data-lightbox="galeria" data-title="Colección de tejas" class="galeria-item" data-aos="fade-up" data-aos-delay="1800">
+                        <img src="imagenes/foto19.jpg" alt="Colección de tejas">
+                        <div class="galeria-overlay">
+                            <h3>Colección de tejas</h3>
+                            <p>Modelos variados</p>
+                        </div>
+                    </a>
+                    
+                    
+                   
+                    
                 </div>
             </div>
         </section>
+
+        <style>
+            /* Sección de proceso de fabricación */
+            .fabricacion-container {
+                text-align: center;
+                padding: 60px 20px;
+                margin-top: 40px;
+                border-radius: 10px;
+            }
+        
+            .fabricacion-container h2 {
+                font-size: 32px;
+                margin-bottom: 30px;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+            }
+        
+            .videos-fabricacion {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 30px;
+            }
+        
+            .video-box {
+
+                padding: 20px;
+                border-radius: 12px;
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+                text-align: center;
+                width: 400px;
+                transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+                position: relative;
+                overflow: hidden;
+            }
+        
+            .video-box:hover {
+                transform: scale(1.05);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            }
+        
+            video {
+                width: 100%;
+                border-radius: 10px;
+                outline: none;
+                transition: opacity 0.3s ease-in-out;
+            }
+        
+            .video-box:hover video {
+                opacity: 0.9;
+            }
+        
+            .video-description {
+                font-size: 18px;
+                margin-top: 15px;
+                font-weight: bold;
+                color: #34495e;
+            }
+        
+            /* Estilos para pantallas pequeñas */
+            @media (max-width: 768px) {
+                .videos-fabricacion {
+                    flex-direction: column;
+                    align-items: center;
+                }
+        
+                .video-box {
+                    width: 90%;
+                }
+            }
+        </style>
+        
+        <section class="fabricacion-container">
+            <h2>Proceso de Fabricación</h2>
+            <div class="videos-fabricacion">
+                <div class="video-box">
+                    <video controls>
+                        <source src="imagenes/teja.mp4" type="video/mp4">
+                        Tu navegador no soporta la reproducción de video.
+                    </video>
+                    <p class="video-description">Preparación del material para tejas reforzadas</p>
+                </div>
+        
+                <div class="video-box">
+                    <video controls>
+                        <source src="imagenes/teja2.mp4" type="video/mp4">
+                        Tu navegador no soporta la reproducción de video.
+                    </video>
+                    <p class="video-description">Proceso de fabricación de tejas rústicas</p>
+                </div>
+            </div>
+        </section>
+        
 
         <section class="cta" data-aos="zoom-in">
             <h2>¿Listo para comenzar tu proyecto?</h2>
@@ -116,6 +1030,60 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox-plus-jquery.min.js"></script>
-    <script src="script.js"></script>
+    <script>
+        // Inicializar AOS (Animate On Scroll)
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Menú móvil
+        const menuMovil = document.querySelector('.menu-movil');
+        const menu = document.querySelector('.menu');
+
+        menuMovil.addEventListener('click', () => {
+            menu.classList.toggle('activo');
+        });
+
+        // Cerrar menú al hacer clic en un enlace
+        const enlaces = document.querySelectorAll('.menu a');
+        enlaces.forEach(enlace => {
+            enlace.addEventListener('click', () => {
+                menu.classList.remove('activo');
+            });
+        });
+
+        // Cambiar clase activa en el menú
+        const seccionActual = location.pathname.split("/").pop();
+        enlaces.forEach(enlace => {
+            if (enlace.getAttribute("href") === seccionActual) {
+                enlace.classList.add("activo");
+            }
+        });
+
+        // Efecto parallax en el hero de galería
+        window.addEventListener('scroll', () => {
+            const hero = document.querySelector('.galeria-hero');
+            const scrollPosition = window.pageYOffset;
+            hero.style.backgroundPositionY = scrollPosition * 0.7 + 'px';
+        });
+
+        // Configuración de Lightbox
+        lightbox.option({
+            'resizeDuration': 200,
+            'wrapAround': true,
+            'albumLabel': "Imagen %1 de %2"
+        });
+
+        // Animación suave al hacer scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
